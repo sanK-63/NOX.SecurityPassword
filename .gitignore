@@ -1,0 +1,45 @@
+# Build directories
+build/
+out/
+cmake-build-*/
+x64/
+Debug/
+Release/
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+*.vcxproj.*.user
+
+# IDE
+.vs/
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Compiled
+*.exe
+*.dll
+*.lib
+*.exp
+*.pdb
+*.ilk
+*.obj
+
+# Dependencies (fetched by CMake)
+_build/
+_deps/
+
+# Generated icon script
+gen_icon.py
+
+# ImGui state
+imgui.ini
+config.ini
+
+# OS
+Thumbs.db
+Desktop.ini
+.DS_Store
