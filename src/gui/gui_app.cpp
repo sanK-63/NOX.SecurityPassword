@@ -352,7 +352,7 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
 
     char    detMaster[256] = "", detDomain[256] = "", detLogin[256] = "";
     int     detLen = 32;        bool detLower = true, detUpper = true, detDigits = true, detSpecial = false;
-    char    detExclude[128] = "";
+    int     detKey = 0;         char detExclude[128] = "";
 
     int     phonLen = 16;       bool phonDigits = true, phonSpecial = false;
 
@@ -475,6 +475,10 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
                 ImGui::TableSetColumnIndex(1); ImGui::Checkbox("##m1d", &detDigits);
                 ImGui::TableNextRow(); ImGui::TableSetColumnIndex(0); ImGui::Text("!@#");
                 ImGui::TableSetColumnIndex(1); ImGui::Checkbox("##m1s", &detSpecial);
+                ImGui::TableNextRow(); ImGui::TableSetColumnIndex(0); ImGui::Text("Ключ");
+                ImGui::TableSetColumnIndex(1); ImGui::SetNextItemWidth(-1); ImGui::SliderInt("##m1key", &detKey, 0, 9999);
+                if (ImGui::IsItemHovered())
+                    ImGui::SetTooltip("0 = ключ отключён. Изменение ключа даёт другой пароль при тех же мастер-пароле, домене и логине.");
                 ImGui::TableNextRow(); ImGui::TableSetColumnIndex(0); ImGui::Text("Исключить");
                 ImGui::TableSetColumnIndex(1); ImGui::SetNextItemWidth(-1); ImGui::InputText("##m1exc", detExclude, sizeof(detExclude));
                 ImGui::EndTable();
@@ -485,7 +489,7 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
                 std::string a = buildAlphabet(detLower, detUpper, detDigits, detSpecial, detExclude);
                 if (!a.empty() && strlen(detMaster) > 0 && strlen(detDomain) > 0) {
                     StatelessGenerator gen;
-                    std::string pwd = gen.generate(detMaster, detDomain, detLogin, static_cast<size_t>(detLen), a);
+                    std::string pwd = gen.generate(detMaster, detDomain, detLogin, static_cast<size_t>(detLen), a, detKey);
                     strncpy_s(passwordBuf, pwd.c_str(), _TRUNCATE);
                     entropyVal = calcEntropy(passwordBuf, countPoolSize(detLower, detUpper, detDigits, detSpecial, detExclude));
                     copied = false;

@@ -9,14 +9,18 @@ std::string StatelessGenerator::generate(
     const std::string& domain,
     const std::string& login,
     size_t passwordLength,
-    const std::string& alphabet)
+    const std::string& alphabet,
+    int generationKey)
 {
     if (alphabet.empty()) {
         throw std::invalid_argument("alphabet must not be empty");
     }
 
-    std::vector<unsigned char> salt(crypto_pwhash_SALTBYTES);
     std::string saltInput = domain + "|" + login;
+    if (generationKey > 0)
+        saltInput += "|" + std::to_string(generationKey);
+
+    std::vector<unsigned char> salt(crypto_pwhash_SALTBYTES);
     crypto_generichash(
         salt.data(), salt.size(),
         reinterpret_cast<const unsigned char*>(saltInput.data()),

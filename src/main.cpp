@@ -64,7 +64,29 @@ static void demo_stateless_generator()
 
     std::cout << "Password (32 chars, deterministic):\n  " << password << "\n";
 
-    // Verify determinism — same inputs → same password
+    // Same inputs with key=0 matches default
+    std::string password_key0 = gen.generate(
+        "MySecureMasterPassword123!",
+        "github.com",
+        "user@example.com",
+        32,
+        alphabet,
+        0);
+    std::cout << "With key=0:\n  " << password_key0 << "\n";
+    std::cout << "Match (key=0 vs default): " << (password == password_key0 ? "yes" : "no") << "\n";
+
+    // Different key → different password
+    std::string password_key1 = gen.generate(
+        "MySecureMasterPassword123!",
+        "github.com",
+        "user@example.com",
+        32,
+        alphabet,
+        1);
+    std::cout << "With key=1:\n  " << password_key1 << "\n";
+    std::cout << "Different from key=0: " << (password != password_key1 ? "yes" : "no") << "\n";
+
+    // Re-generated with same key → same password
     std::string password2 = gen.generate(
         "MySecureMasterPassword123!",
         "github.com",

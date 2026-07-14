@@ -124,6 +124,32 @@ static void test_stateless_generator()
     std::cout << "[PASS] StatelessGenerator deterministic\n";
 }
 
+static void test_stateless_generator_key()
+{
+    StatelessGenerator gen;
+    const std::string alphabet =
+        "abcdefghijklmnopqrstuvwxyz"
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        "0123456789";
+
+    // Same inputs + same key → same output
+    std::string p1 = gen.generate("master", "example.com", "user", 16, alphabet, 42);
+    std::string p2 = gen.generate("master", "example.com", "user", 16, alphabet, 42);
+    assert(p1 == p2);
+    assert(p1.size() == 16);
+
+    // Different key → different output
+    std::string p3 = gen.generate("master", "example.com", "user", 16, alphabet, 1);
+    assert(p1 != p3);
+
+    // Key=0 gives pre-key behaviour (backwards compat)
+    std::string p0 = gen.generate("master", "example.com", "user", 16, alphabet, 0);
+    std::string p0_def = gen.generate("master", "example.com", "user", 16, alphabet);
+    assert(p0 == p0_def);
+
+    std::cout << "[PASS] StatelessGenerator key\n";
+}
+
 int main()
 {
     if (sodium_init() < 0) {
@@ -140,6 +166,7 @@ int main()
     test_secure_buffer_append();
     test_entropy_accumulator();
     test_stateless_generator();
+    test_stateless_generator_key();
 
     std::cout << "\nAll tests passed!\n";
     return 0;

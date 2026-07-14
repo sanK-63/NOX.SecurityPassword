@@ -11,5 +11,6 @@ public:
         const std::string& domain,
         const std::string& login,
         size_t passwordLength,
-        const std::string& alphabet);
+        const std::string& alphabet,
+        int generationKey = 0);
 };

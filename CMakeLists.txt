@@ -13,9 +13,9 @@ else()
 endif()
 
 # Pre-built libsodium (static library, Release, x64, v143)
-set(LIBSODIUM_DIR "C:/Users/stts0/AppData/Local/Temp/opencode/libsodium-src")
-set(LIBSODIUM_LIB "${LIBSODIUM_DIR}/bin/x64/Release/v143/static/libsodium.lib")
-set(LIBSODIUM_INCLUDE "${LIBSODIUM_DIR}/src/libsodium/include")
+set(LIBSODIUM_DIR "C:/Users/stts0/AppData/Local/Temp/opencode/libsodium-src/libsodium")
+set(LIBSODIUM_LIB "${LIBSODIUM_DIR}/x64/Release/v143/static/libsodium.lib")
+set(LIBSODIUM_INCLUDE "${LIBSODIUM_DIR}/include")
 
 if(NOT EXISTS "${LIBSODIUM_LIB}")
     message(FATAL_ERROR "libsodium not found at ${LIBSODIUM_LIB}. Build it first:\n  cmake -P build_libsodium.cmake")
